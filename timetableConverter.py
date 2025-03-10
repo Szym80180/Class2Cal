@@ -33,18 +33,25 @@ for row in rows:
             i += 1
         else:
             if cell.get_text(strip=True) == "":
-                print("Empty cell")
+                #print("Empty cell")
                 day+=1
                 continue
             else:
                 for tag in cell.find_all("br"):
                     tag.replace_with(" ")
                 for b_tag in cell.find_all("b"):
-                    b_tag.unwrap()
-                    
-                for tag in cell:
-                    print(tag)
-               
+                    text = b_tag.get_text(strip=True)
+                    if re.match(r"\[(C|L|P|W)\]", text):
+                        event["type"] = text
+                for b_tag in cell.find_all("b"):
+                    b_tag.unwrap()         
+                for tag in cell.find_all(class_="subject_name"):
+                    print(f"Przedmiot: {tag.get_text(strip=True)}")
+                    event["name"] = tag.get_text(strip=True)
+                    break #wypisuje się tylko jedno
+                event["time"] = time
+                event["room"] = "TBD"
+        print(event)
        
 
 
