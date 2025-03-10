@@ -36,13 +36,15 @@ def createService():
 
   try:
     service = build("calendar", "v3", credentials=creds)
+    return service
   except HttpError as error:
     print(f"An error occurred: {error}")
+    return None
 
 def createCalendar(service):
   calendar = {
     "summary": "Plan zajęć",
-    "timeZone": "	Europe/Warsaw",
+    "timeZone": "Europe/Warsaw",
   }
 
   created_calendar = service.calendars().insert(body=calendar).execute()
@@ -60,15 +62,20 @@ def createEvent(service, name, room, lecturer, start, end, recurrence, color):
     "colorId": color
   }
   print(f"Event: {event} created")
+  return event
     
-def instertEvent(service, calendarId, event):
+def insertEvent(service, calendarId, event):
   event = service.events().insert(calendarId=calendarId, body=event).execute()
   print(f"Event inserted: {event.get('htmlLink')}")
 
 if __name__ == "__main__":
-  createService()
-  
-  
+  service = createService()
+  cid = createCalendar(service)
+  event = createEvent(service, "Matematyka", "B1", "Jan Kowalski", "2025-03-10T09:00:00-07:00", "2025-03-10T17:00:00-07:00", ["RRULE:FREQ=DAILY;COUNT=2"], 1)
+  insertEvent(service, cid, event)
+  x=input("Press x to delete...")
+  if(x == "x"):
+    service.calendars().delete(calendarId=cid).execute()
   
   
   
