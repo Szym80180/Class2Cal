@@ -46,12 +46,13 @@ for row in rows:
                 for b_tag in cell.find_all("b"):
                     b_tag.unwrap()         
                 for tag in cell.find_all(class_="subject_name"):
-                    print(f"Przedmiot: {tag.get_text(strip=True)}")
+                    #print(f"Przedmiot: {tag.get_text(strip=True)}")
                     event["name"] = tag.get_text(strip=True)
                     break #wypisuje się tylko jedno
                 event["time"] = time
                 event["room"] = "TBD"
-        print(event)
+                print(event)
+        
        
 
 
