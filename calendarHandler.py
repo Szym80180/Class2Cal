@@ -9,7 +9,7 @@ from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/calendar.app.created"]
-
+TIMEZONE = "Europe/Warsaw"
 
 def createService():
   """Shows basic usage of the Google Calendar API.
@@ -39,6 +39,31 @@ def createService():
   except HttpError as error:
     print(f"An error occurred: {error}")
 
+def createCalendar(service):
+  calendar = {
+    "summary": "Plan zajęć",
+    "timeZone": "	Europe/Warsaw",
+  }
+
+  created_calendar = service.calendars().insert(body=calendar).execute()
+  print(f"Created calendar with ID: {created_calendar['id']}")
+  return created_calendar["id"]
+
+def createEvent(service, name, room, lecturer, start, end, recurrence, color):
+  event = {
+    "summary": name,
+    "location": room,
+    "description": lecturer,
+    "start": {"dateTime": start, "timeZone": TIMEZONE}, #"dateTime": "2022-05-18T09:00:00-07:00", "timeZone": "America/Los_Angeles"
+    "end": {"dateTime": end, "timeZone": TIMEZONE}, #{"dateTime": "2022-05-18T17:00:00-07:00", "timeZone": TIMEZONE}
+    "recurrence": recurrence, #["RRULE:FREQ=DAILY;COUNT=2"]
+    "colorId": color
+  }
+  print(f"Event: {event} created")
+    
+def instertEvent(service, calendarId, event):
+  event = service.events().insert(calendarId=calendarId, body=event).execute()
+  print(f"Event inserted: {event.get('htmlLink')}")
 
 if __name__ == "__main__":
   createService()
