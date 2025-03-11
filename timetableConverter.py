@@ -19,7 +19,8 @@ event = {
     "time": "",
     "name": "",
     "room": "",
-    "type": ""
+    "type": "",
+    "lecturer": ""
 }
 time = 0
 day=0
@@ -48,6 +49,16 @@ for row in rows:
                 for tag in cell.find_all(class_="subject_name"):
                     #print(f"Przedmiot: {tag.get_text(strip=True)}")
                     event["name"] = tag.get_text(strip=True)
+                    lecturer = ""
+                    for sibling in tag.next_siblings:
+                        if isinstance(sibling, bs4.element.NavigableString):
+                            lecturer += sibling.strip()
+                        elif sibling.name == "br":
+                            break
+                        else:
+                            break
+                    event["lecturer"] = lecturer.strip()
+                    event["lecturer"] = lecturer
                     break #wypisuje się tylko jedno
                 event["time"] = time
                 event["room"] = "TBD"
