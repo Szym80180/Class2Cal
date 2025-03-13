@@ -1,6 +1,10 @@
 import calendarHandler as ch
 from createEvents import getEvents
 import datetime
+from gcsa.recurrence import Recurrence
+from gcsa.recurrence import SU, MO, TU, WE, TH, FR, SA
+from gcsa.recurrence import SECONDLY, MINUTELY, HOURLY, \
+                            DAILY, WEEKLY, MONTHLY, YEARLY
 
 def getGroup():
     group = input("Podaj grupę dziekańską (A/B): ")
@@ -46,10 +50,12 @@ def chooseColors():
     colors['[P]'] = chooseColor()
     return colors
 
+
 def main():
     start_date=datetime.datetime(2025,3,17)
     current_date = start_date
-    def_recurrence = 'RRULE:FREQ=WEEKLY;UNTIL=20250614T170000Z'
+    def_until=datetime.datetime(2025, 6, 8, 23, 59, 59)
+    def_interval=1
     
     gr = getGroup()
     colors=chooseColors()
@@ -62,32 +68,36 @@ def main():
     
     timetable = getEvents()
     
+    
+
     for day in timetable:
         for event in timetable[day]:
-            recurrence=def_recurrence
+
+            until = def_until
+            interval = def_interval
+
             if("group" in event and event["group"] != gr):
                 print(f"Skipping event with group {event['group']}")
                 continue
+
             hour = (int(event["time"][0:2]))
             endhour = hour + 1
             start = current_date.replace(hour=hour, minute=0, second=0)
+
             if not 'start' in event:
                 start = current_date.replace(hour=hour, minute=0, second=0)
             else:
                 startdate = datetime.datetime.strptime(event['start'][3:].replace(".", ""), "%d%m%Y")
                 start = startdate.replace(hour=hour, minute=0, second=0)
-            if not 'end' in event:
-                end = start.replace(hour=endhour, minute=0, second=0)
-            else:
-                rec_date = event['end'][3:].replace(".", "")
-                rec_year = rec_date[4:]
-                rec_month = rec_date[2:4]
-                rec_day = rec_date[:2]
-                rec_date = rec_year + rec_month + rec_day
-                recurrence = 'RRULE:FREQ=WEEKLY;UNTIL=' + rec_date + "T230000Z"
-            end = start.replace(hour=endhour, minute=0, second=0)
 
-            
+            if 'end' in event:
+                rec_date = event['end'][3:].replace(".", "")
+                until = datetime.datetime.strptime(rec_date, "%d%m%Y")+datetime.timedelta(hours=23, minutes=59, seconds=59)
+                
+            if 'twoweeks' in event:
+                interval=2
+            recurrence = Recurrence.rule(freq=WEEKLY, until=until, interval=interval, week_start=MO)
+            end = start.replace(hour=endhour, minute=0, second=0)
             start = start.isoformat()
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], colors[event['type']])
