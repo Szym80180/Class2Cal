@@ -61,7 +61,7 @@ def createEvent(service, name, room, lecturer, start, end, recurrence, color):
     "recurrence": recurrence, #["RRULE:FREQ=DAILY;COUNT=2"]
     "colorId": color
   }
-  print(f"Event: {event} created")
+  #print(f"Event: {event} created")
   return event
     
 def insertEvent(service, calendarId, event):
