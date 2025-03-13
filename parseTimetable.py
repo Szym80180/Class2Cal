@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup as bs
 from bs4 import SoupStrainer
 import bs4
 
-FILENAME = "Class2Cal\sis.html"
+FILENAME = "sis.html"
 OUTPUT_FILENAME = "parsed.txt"
 
 file = open(OUTPUT_FILENAME,"w", encoding = "utf-8") 
@@ -19,6 +19,7 @@ rows = soup.find_all("tr")
 for row in rows:
     i=0
     for cell in row.find_all("td"):
+        file.write("dzien\n")
         if i == 0:
             time = cell.get_text(strip=True)
             file.write(f"{time}\n")
