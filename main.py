@@ -8,18 +8,12 @@ import datetime
 def main():
     start_date=datetime.datetime(2025,3,17)
     current_date = start_date
-    recurrence = 'RRULE:FREQ=WEEKLY;COUNT=10'
+    def_recurrence = 'RRULE:FREQ=WEEKLY;UNTIL=20250614T170000Z'
     
     
     service = ch.createService()
     if service:
         calendarId = ch.createCalendar(service)
-        #event = ch.createEvent(service, "Matematyka", "B1", "Jan Kowalski", "2025-03-10T09:00:00-07:00", "2025-03-10T17:00:00-07:00", ["RRULE:FREQ=DAILY;COUNT=2"], 1)
-        #ch.insertEvent(service, calendarId, event)
-        # x = input("Press x to delete...")
-        # if x == "x":
-        #     service.calendars().delete(calendarId=calendarId).execute()
-        
     else:
         print("Failed to create service. Please check your credentials and try again.")
 
@@ -28,6 +22,7 @@ def main():
     #print(timetable)
     for day in timetable:
         for event in timetable[day]:
+            recurrence=def_recurrence
             if("group" in event and event["group"] != gr):
                 continue
             hour = (int(event["time"][0:2]))
@@ -38,7 +33,19 @@ def main():
             else:
                 startdate = datetime.datetime.strptime(event['start'][3:].replace(".", ""), "%d%m%Y")
                 start = startdate.replace(hour=hour, minute=0, second=0)
+            if not 'end' in event:
+                end = start.replace(hour=endhour, minute=0, second=0)
+            else:
+                rec_date = event['end'][3:].replace(".", "")
+                rec_year = rec_date[4:]
+                rec_month = rec_date[2:4]
+                rec_day = rec_date[:2]
+                rec_date = rec_year + rec_month + rec_day
+                recurrence = 'RRULE:FREQ=WEEKLY;UNTIL=' + rec_date + "T230000Z"
             end = start.replace(hour=endhour, minute=0, second=0)
+            
+            print(f"{event['type']} {event['name']} {event['room']} {event['lecturer']} {start} {end} {recurrence}")
+            #print(recurrence)
             print(f"{event['type']} {event['name']} {event['room']} {event['lecturer']} {start} {end}")
             start = start.isoformat()
             end = end.isoformat()
