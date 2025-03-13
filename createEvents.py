@@ -107,16 +107,12 @@ def getEvents():
                 newevent=False
             if re.search(re_grB, comments):
                 event["group"] = "B"
-                newevent=False
             if re.search(re_start, comments):
                 event["start"] = re.search(re_start, comments).group(0)
-                newevent=False
             if re.search(re_end, comments):
                 event["end"] = re.search(re_end, comments).group(0)
-                newevent=False
             if(re.search(re_twoweeks, comments)):
                 event["twoweeks"] = True
-                newevent=False
             events.append(event)
             iterator=0
 
