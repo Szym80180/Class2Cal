@@ -8,7 +8,9 @@ import datetime
 def main():
     start_date=datetime.datetime(2025,3,17)
     current_date = start_date
-    recurrence = 'RRULE:FREQ=WEEKLY;UNTIL=20250430T1300000Z'
+    recurrence = 'RRULE:FREQ=WEEKLY;COUNT=10'
+    
+    
     service = ch.createService()
     if service:
         calendarId = ch.createCalendar(service)
@@ -17,22 +19,32 @@ def main():
         # x = input("Press x to delete...")
         # if x == "x":
         #     service.calendars().delete(calendarId=calendarId).execute()
+        
     else:
         print("Failed to create service. Please check your credentials and try again.")
 
+    gr = input("Podaj literę grupy dziekanskiej (A/B): ")
     timetable = getEvents()
-    print(timetable)
+    #print(timetable)
     for day in timetable:
         for event in timetable[day]:
+            if("group" in event and event["group"] != gr):
+                continue
             hour = (int(event["time"][0:2]))
             endhour = hour + 1
             start = current_date.replace(hour=hour, minute=0, second=0)
-            end = current_date.replace(hour=endhour, minute=0, second=0)
+            if not 'start' in event:
+                start = current_date.replace(hour=hour, minute=0, second=0)
+            else:
+                startdate = datetime.datetime.strptime(event['start'][3:].replace(".", ""), "%d%m%Y")
+                start = startdate.replace(hour=hour, minute=0, second=0)
+            end = start.replace(hour=endhour, minute=0, second=0)
+            print(f"{event['type']} {event['name']} {event['room']} {event['lecturer']} {start} {end}")
             start = start.isoformat()
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], 1)
             ch.insertEvent(service, calendarId, pushed_event)
-            print(pushed_event)
+            #print(pushed_event)
 
         current_date =current_date+ datetime.timedelta(days=1)
         
