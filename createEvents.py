@@ -57,16 +57,19 @@ def getEvents():
         if "\n" in line:
             line = line.replace("\n", "")
         #print(line)
+        
         if line == "dzien":
-            if iterator ==4:
+            if iterator==4:
                 events.append(event)
-                #print(event) 
+                iterator=0
             if not prev_is_time:
                 day = next_day(day)
                 #print(f"dzien, przestawiony dzine na {day}")
             iterator = 0
             input_event = False
             continue
+        
+                #print(event) 
         prev_is_time=False
         # if line == "pusty":
         #     day = next_day(day)
@@ -114,9 +117,8 @@ def getEvents():
             if(re.search(re_twoweeks, comments)):
                 event["twoweeks"] = True
                 newevent=False
-            if newevent:
-                events.append(event)
-                #print (event)
+            events.append(event)
+            iterator=0
 
     #print(events)
     for event in events:
