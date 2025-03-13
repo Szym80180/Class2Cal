@@ -1,5 +1,7 @@
 import datetime
 import os.path
+import base64
+import json
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -12,7 +14,7 @@ SCOPES = ["https://www.googleapis.com/auth/calendar.app.created"]
 TIMEZONE = "Europe/Warsaw"
 
 def createService():
-  
+  ecred="eyJpbnN0YWxsZWQiOnsiY2xpZW50X2lkIjoiMjY2Nzg1NDIwMzY3LTIyNWc3aWNrNXE2NXJqZDBpMzJiNDl0ZHM3b3A5NmFiLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwicHJvamVjdF9pZCI6ImNsYXNzMmNhbCIsImF1dGhfdXJpIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tL28vb2F1dGgyL2F1dGgiLCJ0b2tlbl91cmkiOiJodHRwczovL29hdXRoMi5nb29nbGVhcGlzLmNvbS90b2tlbiIsImF1dGhfcHJvdmlkZXJfeDUwOV9jZXJ0X3VybCI6Imh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsImNsaWVudF9zZWNyZXQiOiJHT0NTUFgtZkVwYkUwRnFpU3hGTWlUXzhJdmR1UGFaOW5MSSIsInJlZGlyZWN0X3VyaXMiOlsiaHR0cDovL2xvY2FsaG9zdCJdfX0="
   creds = None
   # The file token.json stores the user's access and refresh tokens, and is
   # created automatically when the authorization flow completes for the first
@@ -24,8 +26,10 @@ def createService():
     if creds and creds.expired and creds.refresh_token:
       creds.refresh(Request())
     else:
-      flow = InstalledAppFlow.from_client_secrets_file(
-          "credentials.json", SCOPES
+      decred=base64.b64decode(ecred).decode("utf-8")
+      decred=json.loads(decred)
+      flow = InstalledAppFlow.from_client_config(
+          decred, SCOPES
       )
       creds = flow.run_local_server(port=0)
     # Save the credentials for the next run
