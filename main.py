@@ -50,6 +50,14 @@ def chooseColors():
     colors['[P]'] = chooseColor()
     return colors
 
+def getDate(event):
+        date = input(f"Data rozpoczęcie zajęć {event['name']} DLA CIEBIE - od tej daty zajecia beda sie pojawiac co dwa tygodnie:")
+        if len(date) != 8 or not date.isdigit():
+            print("Podano niepoprawną datę. Spróbuj ponownie.")
+            return getDate(event)
+        return date
+
+
 
 def main():
     start_date=datetime.datetime(2025,3,17)
@@ -96,13 +104,18 @@ def main():
                 
             if 'twoweeks' in event:
                 interval=2
+                print("KONIECZNIE WPISZ DATE W FORMACIE DDMMYYYY, inaczej program nie zadziala")
+                date = getDate(event)
+                startdate = datetime.datetime.strptime(date, "%d%m%Y")
+                start = startdate.replace(hour=hour, minute=0, second=0)
+                
             recurrence = Recurrence.rule(freq=WEEKLY, until=until, interval=interval, week_start=MO)
             end = start.replace(hour=endhour, minute=0, second=0)
             start = start.isoformat()
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], colors[event['type']])
             ch.insertEvent(service, calendarId, pushed_event)
-            #print(pushed_event)
+            print(pushed_event)
 
         current_date =current_date+ datetime.timedelta(days=1)
         
