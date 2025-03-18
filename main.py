@@ -74,7 +74,7 @@ def  getStartDate():
         start_date = datetime.datetime.strptime(start_date, "%d%m%Y")
     except ValueError:
         print("Podano niepoprawną datę. Spróbuj ponownie.")
-    
+        exit(1)
     #if the user didn't input a MONDAY date
     while(start_date.weekday() != 0):
         print("Podana data nie jest poniedziałkiem. Spróbuj ponownie.")
@@ -103,6 +103,24 @@ def handleStartDate(event, current_date, hour):
         start = startdate.replace(hour=hour, minute=0, second=0)
     return start
 
+def handleTwoWeeksStart(event, hour):
+    print(f"Data rozpoczęcia zajęć {event['type']} {event['name']} DLA CIEBIE - od tej daty zajęcia beda sie pojawiac co dwa tygodnie:")
+    date = getDate()
+    startdate = datetime.datetime.strptime(date, "%d%m%Y")
+    while startdate.weekday() != event['day']:
+        print("Podano niepoprawny dzień tygodnia. Spróbuj ponownie.")
+        date = getDate()
+        startdate = datetime.datetime.strptime(date, "%d%m%Y")
+    start = startdate.replace(hour=hour, minute=0, second=0)
+    return start
+
+def checkUntilDate(event, until):
+    if 'end' in event:
+        rec_date = event['end'][3:].replace(".", "")
+        until = datetime.datetime.strptime(rec_date, "%d%m%Y")+datetime.timedelta(hours=23, minutes=59, seconds=59)
+    return until
+
+
 def main():
     pt.parseHTML()
     print("Witaj w programie do automatycznego dodawania zajęć do kalendarza Google!")
@@ -121,12 +139,11 @@ def main():
     gr = getGroup()
     colors=chooseColors()
     
-    #calendarId = ch.createCalendar(service)
+    calendarId = ch.createCalendar(service)
     
     timetable = getEvents()
     for day in timetable:
         for event in timetable[day]:
-
             until = def_until
             interval = def_interval
 
@@ -137,39 +154,28 @@ def main():
             hour = (int(event["time"][0:2]))
             endhour = hour + 1
             start = handleStartDate(event, current_date, hour)            
-            
-            
+            until = checkUntilDate(event, until)
 
-            if 'end' in event:
-                rec_date = event['end'][3:].replace(".", "")
-                until = datetime.datetime.strptime(rec_date, "%d%m%Y")+datetime.timedelta(hours=23, minutes=59, seconds=59)
-                
             if 'twoweeks' in event:
                 interval=2
-                print(f"Data rozpoczęcia zajęć {event['type']} {event['name']} DLA CIEBIE - od tej daty zajęcia beda sie pojawiac co dwa tygodnie:")
-                date = getDate()
-                startdate = datetime.datetime.strptime(date, "%d%m%Y")
-                while startdate.weekday() != event['day']:
-                    print("Podano niepoprawny dzień tygodnia. Spróbuj ponownie.")
-                    date = getDate()
-                    startdate = datetime.datetime.strptime(date, "%d%m%Y")
-                start = startdate.replace(hour=hour, minute=0, second=0)
-                
+                start = handleTwoWeeksStart(event, hour)
+
             recurrence = Recurrence.rule(freq=WEEKLY, until=until, interval=interval, week_start=MO)
             end = start.replace(hour=endhour, minute=0, second=0)
             start = start.isoformat()
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], colors[event['type']])
-            #ch.insertEvent(service, calendarId, pushed_event)
-            print(pushed_event)
+            ch.insertEvent(service, calendarId, pushed_event)
+            #print(pushed_event)
 
         current_date =current_date+ datetime.timedelta(days=1)
+
     print("Zajęcia zostały dodane do kalendarza.")
     print("Jeżeli zrobiłeś/aś coś źle lub chcesz usnąć kalendarz, wpisz 'delete' i naciśnij ENTER")
     print("Jeżeli chcesz zakończyć program, naciśnij ENTER")
     delete = input()
     if delete == "delete":
-        #ch.deleteCalendar(service, calendarId)
+        ch.deleteCalendar(service, calendarId)
         print("Kalendarz został usunięty. Jeżeli chcesz ponowić próbę, uruchom program ponownie")
         return
     return
