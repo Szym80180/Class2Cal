@@ -7,10 +7,6 @@ from gcsa.recurrence import SU, MO, TU, WE, TH, FR, SA
 from gcsa.recurrence import SECONDLY, MINUTELY, HOURLY, \
                             DAILY, WEEKLY, MONTHLY, YEARLY
 
-  #sprawdzać czy podana data startu to poniedziąłek
-#podać typ i dzieńtygodnaia zajec przy pytaniu o date i sprawdzac czy dzien tygodnai sie zgadza
-
-
 
 def getGroup():
     group = input("Podaj grupę dziekańską (A/B): ")
@@ -64,7 +60,21 @@ def getDate():
             return getDate()
         return date
 
-
+def convertWeekdays(date):
+    if(date.weekday() ==0):
+        return "monday"
+    if(date.weekday() ==1):
+        return "tuesday"
+    if(date.weekday() ==2):
+        return "wednesday"
+    if(date.weekday() ==3):
+        return "thursday"
+    if(date.weekday() ==4):
+        return "friday"
+    if(date.weekday() ==5):
+        return "saturday"
+    if(date.weekday() ==6):
+        return "sunday"
 
 def main():
     pt.parseHTML()
@@ -142,6 +152,10 @@ def main():
                 print(f"Data rozpoczęcia zajęć {event['type']} {event['name']} DLA CIEBIE - od tej daty zajęcia beda sie pojawiac co dwa tygodnie:")
                 date = getDate()
                 startdate = datetime.datetime.strptime(date, "%d%m%Y")
+                while startdate.weekday() != event['day']:
+                    print("Podano niepoprawny dzień tygodnia. Spróbuj ponownie.")
+                    date = getDate()
+                    startdate = datetime.datetime.strptime(date, "%d%m%Y")
                 start = startdate.replace(hour=hour, minute=0, second=0)
                 
             recurrence = Recurrence.rule(freq=WEEKLY, until=until, interval=interval, week_start=MO)
@@ -150,7 +164,7 @@ def main():
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], colors[event['type']])
             ch.insertEvent(service, calendarId, pushed_event)
-            #print(pushed_event)
+            print(pushed_event)
 
         current_date =current_date+ datetime.timedelta(days=1)
     print("Zajęcia zostały dodane do kalendarza.")
