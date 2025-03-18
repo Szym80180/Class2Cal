@@ -7,6 +7,9 @@ from gcsa.recurrence import SU, MO, TU, WE, TH, FR, SA
 from gcsa.recurrence import SECONDLY, MINUTELY, HOURLY, \
                             DAILY, WEEKLY, MONTHLY, YEARLY
 
+  
+
+
 def getGroup():
     group = input("Podaj grupę dziekańską (A/B): ")
     if group != 'A' and group != 'B':
@@ -76,7 +79,18 @@ def main():
         start_date = datetime.datetime.strptime(start_date, "%d%m%Y")
     except ValueError:
         print("Podano niepoprawną datę. Spróbuj ponownie.")
-        return
+    
+    #if the user didn't input a MONDAY date
+    while(start_date.weekday() != 0):
+        print("Podana data nie jest poniedziałkiem. Spróbuj ponownie.")
+        start_date=getDate()
+        try:
+            start_date = datetime.datetime.strptime(start_date, "%d%m%Y")
+        except ValueError:
+            print("Podano niepoprawną datę. Spróbuj ponownie.")
+            return
+        
+       
     current_date = start_date
 
     print("Podaj datę zakończenia zajęć - do tej daty pojawiają się zajęcia w kalendarzu")
@@ -139,7 +153,7 @@ def main():
         current_date =current_date+ datetime.timedelta(days=1)
     print("Zajęcia zostały dodane do kalendarza.")
     print("Dziękuję za skorzystanie z programu.")
-    input("Naciśnij dowolny klawisz, aby zakończyć...")
+    input("Naciśnij ENTER, aby zakończyć...")
     return
         
 if __name__ == "__main__":
