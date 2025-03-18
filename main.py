@@ -60,32 +60,15 @@ def getDate():
             return getDate()
         return date
 
-def convertWeekdays(date):
-    if(date.weekday() ==0):
-        return "monday"
-    if(date.weekday() ==1):
-        return "tuesday"
-    if(date.weekday() ==2):
-        return "wednesday"
-    if(date.weekday() ==3):
-        return "thursday"
-    if(date.weekday() ==4):
-        return "friday"
-    if(date.weekday() ==5):
-        return "saturday"
-    if(date.weekday() ==6):
-        return "sunday"
-
-def main():
-    pt.parseHTML()
-    print("Witaj w programie do automatycznego dodawania zajęć do kalendarza Google!")
-    print("Najpierw musisz się zalogować do swojego konta Google.")  
+def createService():
     service = ch.createService()  
     if not service:
         print("Failed to create service. Please check your credentials and try again.")
+        exit(1)
     print("Pomyślnie zalogowano do konta Google.")
+    return service
 
-    print("Podaj najbliższy PONIEDZIAŁEK od daty rozpoczęcia zajęć - od tej daty pojawą się zajęcia w kalendarzu")
+def  getStartDate():
     start_date=getDate()
     try:
         start_date = datetime.datetime.strptime(start_date, "%d%m%Y")
@@ -100,48 +83,62 @@ def main():
             start_date = datetime.datetime.strptime(start_date, "%d%m%Y")
         except ValueError:
             print("Podano niepoprawną datę. Spróbuj ponownie.")
-            return
-        
-       
-    current_date = start_date
+            exit(1)
+    return start_date
 
-    print("Podaj datę zakończenia zajęć - do tej daty pojawiają się zajęcia w kalendarzu")
+def getEndDate():
     end_date=getDate()
     try:
         def_until=datetime.datetime.strptime(end_date, "%d%m%Y")+datetime.timedelta(hours=23, minutes=59, seconds=59)
     except ValueError:
         print("Podano niepoprawną datę. Spróbuj ponownie.")
-        return
-   
+        exit(1)
+    return def_until
+
+def handleStartDate(event, current_date, hour):
+    if not 'start' in event:
+        start = current_date.replace(hour=hour, minute=0, second=0)
+    else:
+        startdate = datetime.datetime.strptime(event['start'][3:].replace(".", ""), "%d%m%Y")
+        start = startdate.replace(hour=hour, minute=0, second=0)
+    return start
+
+def main():
+    pt.parseHTML()
+    print("Witaj w programie do automatycznego dodawania zajęć do kalendarza Google!")
+    print("Najpierw musisz się zalogować do swojego konta Google.")  
+    
+    service = createService()
+
+    print("Podaj najbliższy PONIEDZIAŁEK od daty rozpoczęcia zajęć - od tej daty pojawą się zajęcia w kalendarzu")
+    start_date=getStartDate() 
+    current_date = start_date
+
+    print("Podaj datę zakończenia zajęć - do tej daty pojawiają się zajęcia w kalendarzu")
+    def_until=getEndDate()   
     def_interval=1
     
     gr = getGroup()
     colors=chooseColors()
     
-    calendarId = ch.createCalendar(service)
+    #calendarId = ch.createCalendar(service)
     
     timetable = getEvents()
-    
-    
-
     for day in timetable:
         for event in timetable[day]:
 
             until = def_until
             interval = def_interval
 
+            #skipping classes for other groups
             if("group" in event and event["group"] != gr):
                 continue
 
             hour = (int(event["time"][0:2]))
             endhour = hour + 1
-            start = current_date.replace(hour=hour, minute=0, second=0)
-
-            if not 'start' in event:
-                start = current_date.replace(hour=hour, minute=0, second=0)
-            else:
-                startdate = datetime.datetime.strptime(event['start'][3:].replace(".", ""), "%d%m%Y")
-                start = startdate.replace(hour=hour, minute=0, second=0)
+            start = handleStartDate(event, current_date, hour)            
+            
+            
 
             if 'end' in event:
                 rec_date = event['end'][3:].replace(".", "")
@@ -163,7 +160,7 @@ def main():
             start = start.isoformat()
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], colors[event['type']])
-            ch.insertEvent(service, calendarId, pushed_event)
+            #ch.insertEvent(service, calendarId, pushed_event)
             print(pushed_event)
 
         current_date =current_date+ datetime.timedelta(days=1)
@@ -172,7 +169,7 @@ def main():
     print("Jeżeli chcesz zakończyć program, naciśnij ENTER")
     delete = input()
     if delete == "delete":
-        ch.deleteCalendar(service, calendarId)
+        #ch.deleteCalendar(service, calendarId)
         print("Kalendarz został usunięty. Jeżeli chcesz ponowić próbę, uruchom program ponownie")
         return
     return
