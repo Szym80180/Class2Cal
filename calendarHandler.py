@@ -58,40 +58,13 @@ def createEvent(service, name, room, lecturer, start, end, recurrence, color):
     "summary": name,
     "location": room,
     "description": lecturer,
-    "start": {"dateTime": start, "timeZone": TIMEZONE}, #"dateTime": "2022-05-18T09:00:00-07:00", "timeZone": "America/Los_Angeles"
-    "end": {"dateTime": end, "timeZone": TIMEZONE}, #{"dateTime": "2022-05-18T17:00:00-07:00", "timeZone": TIMEZONE}
-    "recurrence": recurrence, #["RRULE:FREQ=DAILY;COUNT=2"]
+    "start": {"dateTime": start, "timeZone": TIMEZONE},
+    "end": {"dateTime": end, "timeZone": TIMEZONE}, 
+    "recurrence": recurrence, #format: ["RRULE:FREQ=DAILY;COUNT=2"]
     "colorId": color
   }
-  #print(f"Event: {event} created")
+
   return event
     
 def insertEvent(service, calendarId, event):
   event = service.events().insert(calendarId=calendarId, body=event).execute()
-  #print(f"Event inserted: {event.get('htmlLink')}")
-
-if __name__ == "__main__":
-  service = createService()
-  cid = createCalendar(service)
-  event = createEvent(service, "Matematyka", "B1", "Jan Kowalski", "2025-03-10T09:00:00-07:00", "2025-03-10T17:00:00-07:00", ["RRULE:FREQ=DAILY;COUNT=2"], 1)
-  insertEvent(service, cid, event)
-  x=input("Press x to delete...")
-  if(x == "x"):
-    service.calendars().delete(calendarId=cid).execute()
-  
-  
-  
-  # Call the Calendar API
-    #now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time
-  # events_result = (
-    #     service.events()
-    #     .list(
-    #         calendarId="primary",
-    #         timeMin=now,
-    #         maxResults=10,
-    #         singleEvents=True,
-    #         orderBy="startTime",
-    #     )
-    #     .execute()
-    # )
-    #events = events_result.get("items", [])
