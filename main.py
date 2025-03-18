@@ -7,7 +7,9 @@ from gcsa.recurrence import SU, MO, TU, WE, TH, FR, SA
 from gcsa.recurrence import SECONDLY, MINUTELY, HOURLY, \
                             DAILY, WEEKLY, MONTHLY, YEARLY
 
-  
+  #sprawdzać czy podana data startu to poniedziąłek
+#podać typ i dzieńtygodnaia zajec przy pytaniu o date i sprawdzac czy dzien tygodnai sie zgadza
+
 
 
 def getGroup():
@@ -137,7 +139,7 @@ def main():
                 
             if 'twoweeks' in event:
                 interval=2
-                print(f"Data rozpoczęcia zajęć {event['name']} DLA CIEBIE - od tej daty zajęcia beda sie pojawiac co dwa tygodnie:")
+                print(f"Data rozpoczęcia zajęć {event['type']} {event['name']} DLA CIEBIE - od tej daty zajęcia beda sie pojawiac co dwa tygodnie:")
                 date = getDate()
                 startdate = datetime.datetime.strptime(date, "%d%m%Y")
                 start = startdate.replace(hour=hour, minute=0, second=0)
@@ -152,8 +154,13 @@ def main():
 
         current_date =current_date+ datetime.timedelta(days=1)
     print("Zajęcia zostały dodane do kalendarza.")
-    print("Dziękuję za skorzystanie z programu.")
-    input("Naciśnij ENTER, aby zakończyć...")
+    print("Jeżeli zrobiłeś/aś coś źle lub chcesz usnąć kalendarz, wpisz 'delete' i naciśnij ENTER")
+    print("Jeżeli chcesz zakończyć program, naciśnij ENTER")
+    delete = input()
+    if delete == "delete":
+        ch.deleteCalendar(service, calendarId)
+        print("Kalendarz został usunięty. Jeżeli chcesz ponowić próbę, uruchom program ponownie")
+        return
     return
         
 if __name__ == "__main__":
