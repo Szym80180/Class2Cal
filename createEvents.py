@@ -31,11 +31,11 @@ def insert(day, event):
             timetable["friday"].append(event)
 
 re_hour = r"^(\d{2}:\d{2})$"
-re_grA = r"gr.A"
-re_grB = r"gr.B"
-re_start = r"od \d{2}.\d{2}.\d{4}"
-re_end = r"do \d{2}.\d{2}.\d{4}"
-re_twoweeks = r"co 2 tygodnie"
+re_grA = r"gr.a"
+re_grB = r"gr.b"
+re_start = r"od\d{2}.\d{2}.\d{4}"
+re_end = r"do\d{2}.\d{2}.\d{4}"
+re_twoweeks = r"co2tygodnie"
 
 def getEvents():
 
@@ -100,17 +100,17 @@ def getEvents():
             iterator += 1
         elif iterator == 4:
             newevent=True
-            comments = line
-            if re.search(re_grA, comments):
-                event["group"] = "A"
+            testcomments=line.replace(" ", "").lower().strip()
+            if re.search(re_grA, testcomments):
+                event["group"] = "a"
                 newevent=False
-            if re.search(re_grB, comments):
-                event["group"] = "B"
-            if re.search(re_start, comments):
-                event["start"] = re.search(re_start, comments).group(0)
-            if re.search(re_end, comments):
-                event["end"] = re.search(re_end, comments).group(0)
-            if(re.search(re_twoweeks, comments)):
+            if re.search(re_grB, testcomments):
+                event["group"] = "b"
+            if re.search(re_start, testcomments):
+                event["start"] = re.search(re_start, testcomments).group(0)
+            if re.search(re_end, testcomments):
+                event["end"] = re.search(re_end, testcomments).group(0)
+            if(re.search(re_twoweeks, testcomments)):
                 event["twoweeks"] = True
             events.append(event)
             iterator=0

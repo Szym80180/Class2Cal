@@ -9,8 +9,8 @@ from gcsa.recurrence import SECONDLY, MINUTELY, HOURLY, \
 
 
 def getGroup():
-    group = input("Podaj grupę dziekańską (A/B): ")
-    if group != 'A' and group != 'B':
+    group = input("Podaj grupę dziekańską (A/B): ").lower()
+    if group != 'a' and group != 'b':
         print("Podano niepoprawną grupę dziekańską. Spróbuj ponownie.")
         return getGroup()
     return group
@@ -101,7 +101,7 @@ def handleStartDate(event, current_date, hour):
     if not 'start' in event:
         start = current_date.replace(hour=hour, minute=0, second=0)
     else:
-        startdate = datetime.datetime.strptime(event['start'][3:].replace(".", ""), "%d%m%Y")
+        startdate = datetime.datetime.strptime(event['start'][2:].replace(".", ""), "%d%m%Y")
         start = startdate.replace(hour=hour, minute=0, second=0)
     return start
 
@@ -118,7 +118,7 @@ def handleTwoWeeksStart(event, hour):
 
 def checkUntilDate(event, until):
     if 'end' in event:
-        rec_date = event['end'][3:].replace(".", "")
+        rec_date = event['end'][2:].replace(".", "")
         until = datetime.datetime.strptime(rec_date, "%d%m%Y")+datetime.timedelta(hours=23, minutes=59, seconds=59)
     return until
 
@@ -177,7 +177,7 @@ def main():
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], colors[event['type']])
             ch.insertEvent(service, calendarId, pushed_event)
-            #print(pushed_event)
+            print(pushed_event)
 
         current_date =current_date+ datetime.timedelta(days=1)
 
