@@ -74,6 +74,7 @@ def  getStartDate():
         start_date = datetime.datetime.strptime(start_date, "%d%m%Y")
     except ValueError:
         print("Podano niepoprawną datę. Spróbuj ponownie.")
+        input("Wciśnij enter aby zakończyć")
         exit(1)
     #if the user didn't input a MONDAY date
     while(start_date.weekday() != 0):
@@ -83,6 +84,7 @@ def  getStartDate():
             start_date = datetime.datetime.strptime(start_date, "%d%m%Y")
         except ValueError:
             print("Podano niepoprawną datę. Spróbuj ponownie.")
+            input("Wciśnij enter aby zakończyć")
             exit(1)
     return start_date
 
@@ -122,11 +124,20 @@ def checkUntilDate(event, until):
 
 
 def main():
-    pt.parseHTML()
+    try:
+        pt.parseHTML()
+    except Exception:
+        print("Nie udało się otworzyć pliku z planem zajęć z  powodu nieoczekiwanego błędu. Spróbuj ponownie.")
+        input("Wciśnij enter aby zakończyć")
+        exit(1)
     print("Witaj w programie do automatycznego dodawania zajęć do kalendarza Google!")
     print("Najpierw musisz się zalogować do swojego konta Google.")  
-    
-    service = createService()
+    try:
+        service = createService()
+    except Exception:
+        print("Nie udało się zalogować do konta Google. Może nie masz internetu? Spróbuj ponownie.")
+        input("Wciśnij enter aby zakończyć")
+        exit(1)
 
     print("Podaj najbliższy PONIEDZIAŁEK od daty rozpoczęcia zajęć - od tej daty pojawą się zajęcia w kalendarzu")
     start_date=getStartDate() 
