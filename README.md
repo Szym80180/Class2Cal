@@ -156,7 +156,6 @@ For available color options, check the [Modern colors](https://google-calendar-s
 ## Troubleshooting
 - **Authorization issues:** Ensure that your `credentials.json` file is correct and that the Calendar API is enabled in your Google Cloud project.
 - **Dependency issues:** Check that you are using Python 3.11 and that all required modules are installed.
-- If you encounter any problems or errors, please visit our [Issues](https://github.com/Szym80180/Class2Cal/issues) page on GitHub or contact the project author (Discord: Szym80180).
 
 ## License and Support
 - Class2Cal is provided free of charge for non-commercial use only.  
