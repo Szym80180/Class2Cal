@@ -12,11 +12,17 @@ def parseHTML():
     try:
         file = open(OUTPUT_FILENAME,"w", encoding = "utf-8") 
     except FileNotFoundError:
-        print(f"Nie znaleziono pliku {FILENAME}")
+        print(f"Nie znaleziono pliku {OUTPUT_FILENAME}")
+        input("Wciśnij enter aby zakończyć")
         exit(1)
 
     only_table = SoupStrainer(id="tb")
-    soup = bs(open(FILENAME, encoding="utf-8"), "html.parser", parse_only=only_table)
+    try:
+        soup = bs(open(FILENAME, encoding="utf-8"), "html.parser", parse_only=only_table)
+    except FileNotFoundError:
+        print(f"Nie znaleziono pliku {FILENAME}")
+        input("Wciśnij enter aby zakończyć")
+        exit(1)
 
 
     rows = soup.find_all("tr")
