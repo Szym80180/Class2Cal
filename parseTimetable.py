@@ -1,5 +1,12 @@
-import bs4
+# Non-Commercial Open License (NCOL)
+# Copyright (c) 2025 Szym80180
+# 
+# This software is licensed under the Non-Commercial Open License (NCOL).
+# You may use, modify, and distribute this code for non-commercial purposes only.
+# Redistribution must include attribution to the original author and retain this license.
+# For full license details, see the LICENSE file in the project root.
 
+import bs4
 import re
 from bs4 import BeautifulSoup as bs
 from bs4 import SoupStrainer
