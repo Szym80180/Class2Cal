@@ -60,7 +60,6 @@ Aby zobaczyć dostępne kolory, sprawdź sekcję [Modern colors](https://google-
 - W razie problemów lub błędów, odwiedź naszą stronę Issues na GitHubie lub skontaktuj się z autorem projektu (Discord: Szym80180).
 
 
-
 ## Licencja i wsparcie
 - Projekt Class2Cal jest udostępniany do bezpłatnego użytku wyłącznie w celach niekomercyjnych.  
 **Zastrzeżenia:**
@@ -76,47 +75,6 @@ Chętnie przyjmuję zgłoszenia wszelkich błędów oraz propozycje poprawek, ab
 Jeśli natkniesz się na błąd lub problem, proszę zgłoś go poprzez sekcję [Issues](https://github.com/Szym80180/Class2Cal/issues) w repozytorium GitHub.
 
 Jeśli masz pomysł na poprawę lub chcesz samodzielnie wprowadzić zmiany, zachęcam do tworzenia pull requestów.
-Twoje propozycje i wkład w rozwój projektu są bardzo mile widziane!
-
-
----
-
-
-3. **Utwórz projekt w Google Cloud** oraz włącz API Kalendarza. Szczegółową instrukcję znajdziesz [tutaj](https://developers.google.com/calendar/api/quickstart/python).
-4. Pobierz dane uwierzytelniające i zapisz je w pliku `credentials.json` w katalogu projektu.
-5. Uruchom program.
-6. Zaloguj się na konto Google, do którego chcesz dodać kalendarz.
-7. Postępuj zgodnie z wyświetlanymi zapytaniami i podawaj wymagane informacje.  
-Aby zobaczyć dostępne kolory, sprawdź sekcję [Modern colors](https://google-calendar-simple-api.readthedocs.io/en/latest/colors.html).
-8. **Sprawdź**, czy kalendarz został poprawnie przepisany.
-
-### Opcja 2: Uruchamianie za pomocą pliku wykonywalnego (.exe)
-1. **Pobierz najnowszą wersję pliku wykonywalnego** z sekcji Releases.
-2. Uruchom program.
-3. Zaloguj się na konto Google, do którego chcesz dodać kalendarz.
-4. Postępuj zgodnie z wyświetlanymi zapytaniami i podawaj wymagane informacje.  
-Aby zobaczyć dostępne kolory, sprawdź sekcję [Modern colors](https://google-calendar-simple-api.readthedocs.io/en/latest/colors.html).
-5. **Sprawdź**, czy kalendarz został poprawnie przepisany.
-
-## Rozwiązywanie problemów
-- **Problemy z autoryzacją:** Upewnij się, że plik `credentials.json` jest poprawny oraz że API Kalendarza jest włączone w Twoim projekcie Google Cloud.
-- **Problemy z zależnościami:** Sprawdź, czy używasz Pythona w wersji 3.11 oraz czy wszystkie moduły zostały poprawnie zainstalowane.
-- W razie problemów lub błędów, odwiedź naszą stronę [Issues](https://github.com/Szym80180/Class2Cal/issues) na GitHubie lub skontaktuj się z autorem projektu (Discord: Szym80180).
-
-## Licencja i wsparcie
-- Projekt Class2Cal jest udostępniany do bezpłatnego użytku wyłącznie w celach niekomercyjnych.  
-**Zastrzeżenia:**
-- Zabrania się komercyjnego wykorzystywania tego projektu.
-- W przypadku redystrybucji kodu, autorzy redystrybucji zobowiązani są do zachowania informacji o oryginalnym autorze (np. poprzez umieszczenie stosownego nagłówka lub notatki w kodzie źródłowym).  
-Szczegóły dotyczące licencji znajdziesz w pliku LICENSE.
-- Aby uzyskać wsparcie lub sprawdzić aktualizacje, odwiedź sekcję Releases lub repozytorium projektu.
-
-## Zgłaszanie błędów i propozycje poprawek
-Chętnie przyjmuję zgłoszenia wszelkich błędów oraz propozycje poprawek, aby projekt Class2Cal mógł się stale rozwijać i lepiej służyć społeczności studenckiej.
-
-Jeśli natkniesz się na błąd lub problem, proszę zgłoś go poprzez sekcję [Issues](https://github.com/Szym80180/Class2Cal/issues) w repozytorium GitHub.
-
-Jeśli masz pomysł na poprawę lub chcesz samodzielnie wprowadzić zmiany, zachęcam do tworzenia pull requestów.  
 Twoje propozycje i wkład w rozwój projektu są bardzo mile widziane!
 
 ---
