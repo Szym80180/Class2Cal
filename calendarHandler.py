@@ -53,6 +53,9 @@ def createCalendar(service):
   print(f"Created calendar with ID: {created_calendar['id']}")
   return created_calendar["id"]
 
+def deleteCalendar(service, calendarId):
+  service.calendars().delete(calendarId=calendarId).execute()
+
 def createEvent(service, name, room, lecturer, start, end, recurrence, color):
   event = {
     "summary": name,
