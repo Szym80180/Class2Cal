@@ -1,5 +1,4 @@
 import re
-from prettytable import PrettyTable
 
 INPUT_NAME = "parsed.txt"
 timetable={
