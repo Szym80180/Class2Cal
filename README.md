@@ -30,6 +30,7 @@ Class2Cal to proste narzędzie umożliwiające migrację wydarzeń z kalendarza 
 - Edytor kodu (jeśli uruchamiasz program ze źródeł)
 - Projekt w Google Cloud z włączonym API Kalendarza
 - Plik `credentials.json` zawierający dane uwierzytelniające Google API
+- Plik sis.html utworzony przez skopiowanie do pliku kodu HTML strony SIS z otwartym wybranym planem zajęć.
 
 ## Instrukcja uruchomienia
 
@@ -40,19 +41,21 @@ Jeśli nie ufasz plikowi `.exe`, możesz uruchomić program bezpośrednio z kodu
 2. Otwórz terminal i zainstaluj zależności: `pip install -r requirements.txt`
 3. **Utwórz projekt w Google Cloud** oraz włącz API Kalendarza. Szczegółową instrukcję znajdziesz [tutaj](https://developers.google.com/calendar/api/quickstart/python).
 4. Pobierz dane uwierzytelniające i zapisz je w pliku `credentials.json` w katalogu projektu.
-5. Uruchom program.
-6. Zaloguj się na konto Google, do którego chcesz dodać kalendarz.
-7. Postępuj zgodnie z wyświetlanymi zapytaniami i podawaj wymagane informacje.  
+5. Umieść plik `sis.html` w katalogu projektu.
+6. Uruchom program.
+7. Zaloguj się na konto Google, do którego chcesz dodać kalendarz.
+8. Postępuj zgodnie z wyświetlanymi zapytaniami i podawaj wymagane informacje.  
 Aby zobaczyć dostępne kolory, sprawdź sekcję [Modern colors](https://google-calendar-simple-api.readthedocs.io/en/latest/colors.html).
-8. **Sprawdź**, czy kalendarz został poprawnie przepisany.
+9. **Sprawdź**, czy kalendarz został poprawnie przepisany.
 
 ### Opcja 2: Uruchamianie za pomocą pliku wykonywalnego (.exe)
 1. **Pobierz najnowszą wersję pliku wykonywalnego** z sekcji Releases.
-2. Uruchom program.
-3. Zaloguj się na konto Google, do którego chcesz dodać kalendarz.
-4. Postępuj zgodnie z wyświetlanymi zapytaniami i podawaj wymagane informacje.  
+2. Umieść plik `sis.html` w tym samym katalogu co plik `.exe`.
+3. Uruchom program.
+4. Zaloguj się na konto Google, do którego chcesz dodać kalendarz.
+5. Postępuj zgodnie z wyświetlanymi zapytaniami i podawaj wymagane informacje.  
 Aby zobaczyć dostępne kolory, sprawdź sekcję [Modern colors](https://google-calendar-simple-api.readthedocs.io/en/latest/colors.html).
-5. **Sprawdź**, czy kalendarz został poprawnie przepisany.
+6. **Sprawdź**, czy kalendarz został poprawnie przepisany.
 
 ## Rozwiązywanie problemów
 - **Problemy z autoryzacją:** Upewnij się, że plik `credentials.json` jest poprawny oraz że API Kalendarza jest włączone w Twoim projekcie Google Cloud.
@@ -87,6 +90,7 @@ Class2Cal is a simple tool designed to migrate events from your Student Informat
 - A code editor (if running the program from source)
 - A Google Cloud project with the Calendar API enabled
 - A `credentials.json` file containing your Google API authentication data
+- A 'sis.html' file created by copying the HTML code of the SIS webpage with the desired timetable open.
 
 ## Setup Instructions
 
@@ -97,19 +101,21 @@ If you prefer not to use the `.exe` file, you can run the program directly from 
 2. Open your terminal and install the dependencies: `pip install -r requirements.txt`
 3. **Create a project in Google Cloud** and enable the Calendar API. Follow the detailed instructions [here](https://developers.google.com/calendar/api/quickstart/python).
 4. Download your authentication credentials and save them as `credentials.json` in the project directory.
-5. Run the program.
-6. Log in to the Google account where you want to add the calendar.
-7. Follow the program prompts and provide the required information.  
+5. Put `sis.html` inside the project directory.
+6. Run the program.
+7. Log in to the Google account where you want to add the calendar.
+8. Follow the program prompts and provide the required information.  
 For available color options, check the [Modern colors](https://google-calendar-simple-api.readthedocs.io/en/latest/colors.html) section.
-8. **Verify** that the calendar has been correctly imported.
+9. **Verify** that the calendar has been correctly imported.
 
 ### Option 2: Running with the Executable (.exe)
 1. **Download the latest executable** from the Releases section.
-2. Run the program.
-3. Log in to the Google account where you want to add the calendar.
-4. Follow the program prompts and provide the required information.  
+2. Put `sis.html` in the same directory as the `.exe` file.
+3. Run the program.
+4. Log in to the Google account where you want to add the calendar.
+5. Follow the program prompts and provide the required information.  
 For available color options, check the [Modern colors](https://google-calendar-simple-api.readthedocs.io/en/latest/colors.html) section.
-5. **Verify** that the calendar has been correctly imported.
+6. **Verify** that the calendar has been correctly imported.
 
 ## Troubleshooting
 - **Authorization issues:** Ensure that your `credentials.json` file is correct and that the Calendar API is enabled in your Google Cloud project.
