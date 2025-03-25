@@ -143,7 +143,7 @@ def main():
     try:
         service = createService()
     except Exception:
-        print("Nie udało się zalogować do konta Google. Może nie masz internetu? Spróbuj ponownie.")
+        print("Nie udało się zalogować do konta Google. Może nie masz internetu? Usuń plik token.json (jeśli istnieje) i spróbuj ponownie.")
         input("Wciśnij enter aby zakończyć")
         exit(1)
 
@@ -185,7 +185,7 @@ def main():
             end = end.isoformat()
             pushed_event = ch.createEvent(service, f"{event['type']} {event['name']}", event["room"], f"{event['lecturer']}", start, end, [recurrence], colors[event['type']])
             ch.insertEvent(service, calendarId, pushed_event)
-            print(pushed_event)
+            #print(pushed_event)
 
         current_date =current_date+ datetime.timedelta(days=1)
 
